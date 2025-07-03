@@ -1,0 +1,71 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Card from "@components/Card";
+import Datetime from "@components/Datetime";
+import { SITE } from "@config";
+
+export interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects", ({ data }) => !data.draft);
+
+  return projects.map(project => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+
+const { title, description, pubDatetime, modDatetime, technologies } = project.data;
+---
+
+<Layout title={`${title} | ${SITE.title}`}>
+  <Header activeNav="projects" />
+  <Main pageTitle={title} pageDesc={description}>
+    <div class="project-metadata">
+      <Datetime datetime={pubDatetime} />
+      {
+        modDatetime && (
+          <div class="last-modified">
+            Last modified: <Datetime datetime={modDatetime} />
+          </div>
+        )
+      }
+      {technologies.length > 0 && (
+        <div class="technologies">
+          <span>Technologies:</span>
+          {technologies.map(tech => (
+            <span class="tech-tag">{tech}</span>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
+      <Content />
+    </article>
+  </Main>
+  <Footer />
+</Layout>
+
+<style>
+  .project-metadata {
+    @apply flex flex-col gap-2 italic;
+  }
+
+  .technologies {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .tech-tag {
+    @apply rounded-md bg-skin-card px-2 py-1 text-sm;
+  }
+</style> 

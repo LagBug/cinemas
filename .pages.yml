@@ -20,6 +20,23 @@ content:
       - { name: tags, label: Tags, type: string, list: true }
       - { name: description, label: Description, type: string }
       - { name: body, label: Body, type: rich-text }
+  - name: projects
+    label: Projects
+    type: collection
+    path: src/content/projects
+    view:
+      fields: [ title, draft, pubDatetime ]
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: description, label: Description, type: string, required: true }
+      - { name: pubDatetime, label: Publication Date, type: date }
+      - { name: modDatetime, label: Last Modified Date, type: date }
+      - { name: featured, label: Featured, type: boolean }
+      - { name: draft, label: Draft, type: boolean }
+      - { name: technologies, label: Technologies, type: string, list: true }
+      - { name: ogImage, label: Open Graph Image, type: string }
+      - { name: hasPrivacyPolicy, label: Has Privacy Policy, type: boolean }
+      - { name: body, label: Content, type: rich-text }
   - name: about
     label: About page
     type: file
