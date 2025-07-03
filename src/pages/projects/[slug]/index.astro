@@ -31,14 +31,7 @@ const { title, description, pubDatetime, modDatetime, technologies } = project.d
   <Header activeNav="projects" />
   <Main pageTitle={title} pageDesc={description}>
     <div class="project-metadata">
-      <Datetime datetime={pubDatetime} />
-      {
-        modDatetime && (
-          <div class="last-modified">
-            Last modified: <Datetime datetime={modDatetime} />
-          </div>
-        )
-      }
+      <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} size="sm" />
       {technologies.length > 0 && (
         <div class="technologies">
           <span>Technologies:</span>
